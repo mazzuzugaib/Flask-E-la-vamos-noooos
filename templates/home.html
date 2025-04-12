@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+    <h1>Músicas cadastradas</h1>
+    <table>
+        <tr>
+            <th>Titulo</th>
+            <th>Artista</th>
+            <th>Gênero</th>
+        </tr>
+        {% for musica in lista_musicas %}
+        <tr>
+            <td>{{musica.titulo}}</td>
+            <td>{{musica.artista}}</td>
+            <td>{{musica.genero}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
