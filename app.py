@@ -41,6 +41,12 @@ def cadastro_musica():
 def login():
     return render_template('login.html')
 
+@app.route('/validar', methods=['POST'])
+def valide():
+    if request.form['user'] == 'lorem' and request.form['senha'] == 'ipsum':
+        return render_template('home.html', lista_musicas = lista_musicas)
+    return render_template('login.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
