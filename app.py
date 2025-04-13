@@ -37,6 +37,9 @@ def cadastro_musica():
 
     return render_template('home.html', lista_musicas = lista_musicas)
 
+@app.route('/login')
+def login():
+    return render_template('login.html')
 
 
 if __name__ == '__main__':
