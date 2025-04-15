@@ -1,5 +1,5 @@
 #imports
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, url_for, redirect
 #instanciando o Flask
 app = Flask(__name__)
 
@@ -23,7 +23,6 @@ lista_musicas = [m1, m2, m3]
 #pagina inicial
 @app.route('/')
 def inicio():
-
     return render_template('home.html', lista_musicas = lista_musicas)
 
 #pagina de cadastro
@@ -52,13 +51,20 @@ def cadastro_musica():
 
     return render_template('home.html', lista_musicas = lista_musicas)
 
-#validação de usuário
+#validação de usuário (abrir sessão)
 @app.route('/validar', methods=['POST'])
 def valide():
     if request.form['user'] == 'lorem' and request.form['senha'] == 'ipsum':
         session['usuario_in'] = request.form['user']
-        return render_template('home.html', lista_musicas = lista_musicas)
-    return render_template('login.html')
+        return redirect(url_for('inicio'))
+    return redirect(url_for('login'))
+
+#log out de usuario
+@app.route('/sair')
+def sair():
+    session['usuario_in'] = None
+
+    return redirect(url_for('login'))
 
 
 if __name__ == '__main__':

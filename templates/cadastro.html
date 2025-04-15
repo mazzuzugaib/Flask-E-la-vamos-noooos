@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de músicas</title>
-</head>
-<body>
+{%extends "navbar.html"%}
+
+{%block conteudo%}
     <h1>Cadastro de músicas</h1>
     <fieldset>
         <form action="cadastrar" method="POST">
@@ -23,5 +18,4 @@
 
         
     </fieldset>
-</body>
-</html>
+{% endblock %}

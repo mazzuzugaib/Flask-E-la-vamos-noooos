@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Doremi</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .navbar {
+            display: flex;
+            background-color: #333;
+            padding: 0.5rem 1rem;
+            align-items: center;
+        }
+        .navbar a {
+            color: white;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+        }
+        .navbar a:hover {
+            background-color: #575757;
+        }
+        .navbar .logo {
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="logo">Doremi</div>
+        <a href="/">Início</a>
+        <a href="/musicas">Músicas</a>
+        <a href="/contato">Contato</a>
+    </div>
+
+    {% block conteudo %} {% endblock %}
+
+</body>
+</html>
