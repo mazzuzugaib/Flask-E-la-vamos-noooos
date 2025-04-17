@@ -23,17 +23,17 @@ lista_musicas = [m1, m2, m3]
 #pagina inicial
 @app.route('/')
 def inicio():
-    return render_template('home.html', lista_musicas = lista_musicas)
+    return render_template('home.html', lista_musicas = lista_musicas, nome_página='Home')
 
 #pagina de cadastro
 @app.route('/cadastro')
 def cadastro():
-    return render_template('cadastro.html')
+    return render_template('cadastro.html', nome_pagina='Cadastro')
 
 #login
 @app.route('/login')
 def login():
-    return render_template('login.html')
+    return render_template('login.html', nome_pagina='Login')
 
 
 #ROTAS----------------------------------------------------------------------------------------------
