@@ -1,5 +1,5 @@
 #imports
-from flask import Flask, render_template, request, session, url_for, redirect
+from flask import Flask, render_template, request, session, url_for, redirect,flash
 #instanciando o Flask
 app = Flask(__name__)
 
@@ -56,6 +56,9 @@ def cadastro_musica():
 def valide():
     if request.form['user'] == 'lorem' and request.form['senha'] == 'ipsum':
         session['usuario_in'] = request.form['user']
+
+        flash('Login realizado com sucesso!')
+        
         return redirect(url_for('inicio'))
     return redirect(url_for('login'))
 

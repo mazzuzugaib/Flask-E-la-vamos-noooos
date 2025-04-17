@@ -1,6 +1,16 @@
 {% extends "navbar.html"%}
 
 {% block conteudo %}
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+    {% for message in messages %}
+        <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+   
     <fieldset>
         <fieldset>
             <legend>Login</legend>
