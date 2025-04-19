@@ -1,5 +1,5 @@
 #imports
-from flask import Flask, render_template, request, session, url_for, redirect,flash
+from flask import Flask, render_template, request, session, url_for, redirect, flash
 #instanciando o Flask
 app = Flask(__name__)
 
@@ -16,6 +16,14 @@ m2 = lista('Bohemian Rhapsody', 'Queen', 'Rock')
 m3 = lista('Stairway to Heaven', 'Led Zeppelin', 'Rock')
 lista_musicas = [m1, m2, m3]
 
+class Usuario:
+    def __init__(self, nome, login, senha):
+        self.nome = nome
+        self.login = login
+        self.senha = senha
+
+u1 = Usuario('Lorem Ipsum', 'lorem', 'ipsum')
+
 
 
 #VIEWS---------------------------------------------------------------------------
@@ -23,6 +31,9 @@ lista_musicas = [m1, m2, m3]
 #pagina inicial
 @app.route('/')
 def inicio():
+    if session.get('usuario_in') is None:
+        flash('Faça login para continuar:')
+        return redirect(url_for('login'))
     return render_template('home.html', lista_musicas = lista_musicas, nome_página='Home')
 
 #pagina de cadastro
@@ -41,6 +52,7 @@ def login():
 #pega dados do form em cadastro.html.
 @app.route('/cadastrar', methods=['POST'])
 def cadastro_musica():
+    
     titulo = request.form['titulo']
     artista = request.form['artista']
     genero = request.form['genero']
@@ -54,13 +66,15 @@ def cadastro_musica():
 #validação de usuário (abrir sessão)
 @app.route('/validar', methods=['POST'])
 def valide():
-    if request.form['user'] == 'lorem' and request.form['senha'] == 'ipsum':
-        session['usuario_in'] = request.form['user']
+    if request.form['user'] == u1.login and request.form['senha'] == u1.senha:
+        session['usuario_in'] = u1.nome
 
         flash('Login realizado com sucesso!')
         
         return redirect(url_for('inicio'))
-    return redirect(url_for('login'))
+    else:
+        flash('Usuário ou senha inválidos!')
+        return redirect(url_for('login'))
 
 #log out de usuario
 @app.route('/sair')
