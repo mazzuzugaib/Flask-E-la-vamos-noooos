@@ -1,9 +1,13 @@
 #imports
 from flask import Flask, render_template, request, session, url_for, redirect, flash
+from flask_sqlalchemy import SQLAlchemy
 #instanciando o Flask
 app = Flask(__name__)
 
 app.secret_key = 'satorarepotenetoperarotas'
+
+#configurando o banco de dados
+app.config['SQLALCHEMY_DATABASE_URI']
 
 class lista:
     def __init__(self, titulo, artista, genero):
