@@ -38,16 +38,7 @@ class Usuario(db.Model):
     def __repr__(self):
         return '<Name> %r' % self.name
 
-class lista:
-    def __init__(self, titulo, artista, genero):
-        self.titulo = titulo
-        self.artista = artista
-        self.genero = genero
 
-m1 = lista('Knight of Cydonia', 'Muse', 'Rock')
-m2 = lista('Bohemian Rhapsody', 'Queen', 'Rock')
-m3 = lista('Stairway to Heaven', 'Led Zeppelin', 'Rock')
-lista_musicas = [m1, m2, m3]
 
 class Usuario:
     def __init__(self, nome, login, senha):
@@ -67,7 +58,10 @@ def inicio():
     if session.get('usuario_in') is None:
         flash('Faça login para continuar:')
         return redirect(url_for('login'))
-    return render_template('home.html', lista_musicas = lista_musicas, nome_página='Home')
+    
+    lista = Musica.query.order_by(Musica.tb_id)
+
+    return render_template('home.html', lista_musicas = lista, nome_página='Home')
 
 #pagina de cadastro
 @app.route('/cadastro')
@@ -90,7 +84,7 @@ def cadastro_musica():
     artista = request.form['artista']
     genero = request.form['genero']
 
-    nova_musica = lista(titulo, artista, genero)
+    nova_musica = Musica(tb_titulo, tb_artista, tb_genero)
 
     lista_musicas.append(nova_musica)
 
