@@ -19,11 +19,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = \
 db = SQLAlchemy(app)
 
 #criando a tabela de músicas
-class Musica(db.Model):
-    tb_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    tb_titulo = db.Column(db.String(30), nullable=False)
-    tb_artista = db.Column(db.String(30), nullable=False)
-    tb_genero = db.Column(db.String(30), nullable=False)
+    class Musica(db.Model):
+        tb_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+        tb_titulo = db.Column(db.String(30), nullable=False)
+        tb_artista = db.Column(db.String(30), nullable=False)
+        tb_genero = db.Column(db.String(30), nullable=False)
 
     def __repr__(self):
         return '<Name> %r' % self.name
@@ -38,18 +38,6 @@ class Usuario(db.Model):
     def __repr__(self):
         return '<Name> %r' % self.name
 
-
-
-class Usuario:
-    def __init__(self, nome, login, senha):
-        self.nome = nome
-        self.login = login
-        self.senha = senha
-
-u1 = Usuario('Lorem Ipsum', 'lorem', 'ipsum')
-
-
-
 #VIEWS---------------------------------------------------------------------------
 
 #pagina inicial
@@ -61,7 +49,7 @@ def inicio():
     
     lista = Musica.query.order_by(Musica.tb_id)
 
-    return render_template('home.html', lista_musicas = lista, nome_página='Home')
+    return render_template('home.html', lista_musicas = lista, nome_pagina='Home')
 
 #pagina de cadastro
 @app.route('/cadastro')
@@ -74,7 +62,7 @@ def login():
     return render_template('login.html', nome_pagina='Login')
 
 
-#ROTAS----------------------------------------------------------------------------------------------
+#MODELS----------------------------------------------------------------------------------------------
 
 #pega dados do form em cadastro.html.
 @app.route('/cadastrar', methods=['POST'])
@@ -84,17 +72,19 @@ def cadastro_musica():
     artista = request.form['artista']
     genero = request.form['genero']
 
-    nova_musica = Musica(tb_titulo, tb_artista, tb_genero)
+    nova_musica = Musica(tb_titulo=titulo, tb_artista=artista, tb_genero=genero)
+    db.session.add()
+    db.session.commit()
 
-    lista_musicas.append(nova_musica)
+    musicas = Musica.query.order_by(Musica.tb_id)
 
-    return render_template('home.html', lista_musicas = lista_musicas)
+    return render_template('home.html', lista_musicas = musicas)
 
 #validação de usuário (abrir sessão)
 @app.route('/validar', methods=['POST'])
 def valide():
-    if request.form['user'] == u1.login and request.form['senha'] == u1.senha:
-        session['usuario_in'] = u1.nome
+    if request.form['user'] == 'lorem' and request.form['senha'] == 'ipsum':
+        session['usuario_in'] = 'Lorem'
 
         flash('Login realizado com sucesso!')
         
