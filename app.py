@@ -19,11 +19,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = \
 db = SQLAlchemy(app)
 
 #criando a tabela de músicas
-    class Musica(db.Model):
-        tb_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-        tb_titulo = db.Column(db.String(30), nullable=False)
-        tb_artista = db.Column(db.String(30), nullable=False)
-        tb_genero = db.Column(db.String(30), nullable=False)
+class Musica(db.Model):
+    tb_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    tb_titulo = db.Column(db.String(30), nullable=False)
+    tb_artista = db.Column(db.String(30), nullable=False)
+    tb_genero = db.Column(db.String(30), nullable=False)
 
     def __repr__(self):
         return '<Name> %r' % self.name
@@ -72,8 +72,16 @@ def cadastro_musica():
     artista = request.form['artista']
     genero = request.form['genero']
 
+    musica = Musica.query.filter_by(tb_titulo=titulo).first()
+    cantor = Musica.query.filter_by(tb_artista=artista).first()
+    #no curso, ele limita apenas pela musica, mas isso é uma tolice porque pode haver músicas com o mesmo nome
+    #de artistas diferentes, então eu fiz a validação também pelo artista.
+    if musica and cantor:
+        flash('Essa música já está cadastrada!')
+        return redirect(url_for('inicio'))
+
     nova_musica = Musica(tb_titulo=titulo, tb_artista=artista, tb_genero=genero)
-    db.session.add()
+    db.session.add(nova_musica)
     db.session.commit()
 
     musicas = Musica.query.order_by(Musica.tb_id)
@@ -83,7 +91,9 @@ def cadastro_musica():
 #validação de usuário (abrir sessão)
 @app.route('/validar', methods=['POST'])
 def valide():
-    if request.form['user'] == 'lorem' and request.form['senha'] == 'ipsum':
+    user = Usuario.query.filter_by(login_us=request.form['user']).first()
+    senha = Usuario.query.filter_by(senha_us=request.form['senha']).first()
+    if user and senha:
         session['usuario_in'] = 'Lorem'
 
         flash('Login realizado com sucesso!')
