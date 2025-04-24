@@ -1,0 +1,33 @@
+{% extends "navbar.html" %}
+
+{% block conteudo %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flashes">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+<fieldset>
+    <fieldset>
+        <legend>Cadastre-se</legend>
+        <form action="/criar_usuario" method="post">
+
+            <label for="nome">Nome:</label>
+            <input type="text" name="nome">
+            <br><br>
+            <label for="usuario_novo">Usuário:</label>
+            <input type="text" name="usuario_novo">
+            <br><br>
+            <label for="senha">Senha:</label>
+            <input type="text" name = "nova_senha">
+
+            <input type="submit" value="Cadastrar">
+        </form>
+    </fieldset>
+</fieldset>
+
+{% endblock %}
