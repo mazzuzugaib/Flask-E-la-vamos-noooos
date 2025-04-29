@@ -4,14 +4,16 @@
     <h1>Cadastro de músicas</h1>
     <fieldset>
         <form action="{{url_for('atualizar')}}" method="POST">
+            <input type="hidden" name="id_form_atualizar" value="{{musica.tb_id>}}">
+
             <label for="titulo">Título</label>
-            <input type="text" name="titulo" value="{{musica.tb_titulo}}"><br><br>
+            <input type="text" name="titulo_form_atualizar" value="{{musica.tb_titulo}}"><br><br>
 
             <label for="artista">Artista</label>
-            <input type="text" name="artista" value="{{musica.tb_artista}}"><br><br>
+            <input type="text" name="artista_form_atualizar" value="{{musica.tb_artista}}"><br><br>
 
             <label for="genero">Genero</label>
-            <input type="text" name="genero" value="{{musica.tb_genero}}"><br><br>
+            <input type="text" name="genero_form_atualizar" value="{{musica.tb_genero}}"><br><br>
 
             <input type="submit" value="Cadastrar">
         </form>

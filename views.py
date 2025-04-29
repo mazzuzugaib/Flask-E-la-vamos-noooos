@@ -105,20 +105,15 @@ def valide():
 #Passar os dados da rota editar para atualizar a música
 @app.route('/atualizar', methods=['POST'])
 def atualizar():
-    id = request.form['id']
-    titulo = request.form['titulo']
-    artista = request.form['artista']
-    genero = request.form['genero']
+    musica = Musica.query.filter_by(tb_id=request.form['id_form_atualizar']).first()
+    musica.tb_titulo = request.form['titulo_form_atualizar']
+    musica.tb_artista = request.form['artista_form_atualizar']
+    musica.tb_genero = request.form['genero_form_atualizar']
 
-    musica = Musica.query.filter_by(tb_id=id).first()
-    musica.tb_titulo = titulo
-    musica.tb_artista = artista
-    musica.tb_genero = genero
-
+    db.session.add(musica)
     db.session.commit()
 
     flash('Música atualizada com sucesso!')
-   
     return redirect(url_for('inicio'))
 #log out de usuario
 @app.route('/sair')
