@@ -23,6 +23,7 @@
             <td>{{musica.tb_titulo}}</td>
             <td>{{musica.tb_artista}}</td>
             <td>{{musica.tb_genero}}</td>
+            <td><a href="{{url_for('editar', id=musica.tb_id)}}">Editar</a></td>
         </tr>
         {% endfor %}
     </table>

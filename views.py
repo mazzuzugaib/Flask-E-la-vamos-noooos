@@ -30,6 +30,20 @@ def cadastro():
 def login():
     return render_template('login.html', nome_pagina='Login')
 
+#editar musica
+@app.route('/editar/<int:id>')
+def editar(id):
+    if session.get('usuario_in') is None or 'usuario_in' not in session:
+        flash(f'Faça login para continuar ou <a href="{url_for("novo")}">cadastre-se</a>', 'html')
+
+        return redirect(url_for('login'))
+    
+    musica=Musica.query.filter_by(tb_id=id).first()
+    return render_template('editar.html', nome_pagina='Editar Música', musica=musica)
+
+
+
+
 # RETORNOS ------ RETORNOS ------ RETORNOS ------ RETORNOS ------ RETORNOS ------ RETORNOS ------ RETORNOS ------ RETORNOS ------ RETORNOS
 #pega dados do form em cadastro.html.
 @app.route('/criar_usuario', methods=['POST'])
@@ -88,7 +102,24 @@ def valide():
     else:
         flash('Usuário ou senha inválidos!')
         return redirect(url_for('login'))
+#Passar os dados da rota editar para atualizar a música
+@app.route('/atualizar', methods=['POST'])
+def atualizar():
+    id = request.form['id']
+    titulo = request.form['titulo']
+    artista = request.form['artista']
+    genero = request.form['genero']
 
+    musica = Musica.query.filter_by(tb_id=id).first()
+    musica.tb_titulo = titulo
+    musica.tb_artista = artista
+    musica.tb_genero = genero
+
+    db.session.commit()
+
+    flash('Música atualizada com sucesso!')
+   
+    return redirect(url_for('inicio'))
 #log out de usuario
 @app.route('/sair')
 def sair():
