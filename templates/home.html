@@ -24,6 +24,7 @@
             <td>{{musica.tb_artista}}</td>
             <td>{{musica.tb_genero}}</td>
             <td><a href="{{url_for('editar', id=musica.tb_id)}}">Editar</a></td>
+            <td><a href="{{url_for('excluir', id_excluir=musica.tb_id)}}">Excluir</a></td>
         </tr>
         {% endfor %}
     </table>

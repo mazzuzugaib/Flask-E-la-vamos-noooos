@@ -41,7 +41,13 @@ def editar(id):
     musica=Musica.query.filter_by(tb_id=id).first()
     return render_template('editar.html', nome_pagina='Editar Música', musica=musica)
 
-
+#excluir musica
+@app.route('/excluir/<int:id_excluir')
+def excluir(id_excluir):
+    Musica.query.filter_by(tb_id=id_excluir).delete()
+    db.session.commit()
+    flash('Música excluída.')
+    return redirect(url_for('inicio'))
 
 
 # RETORNOS ------ RETORNOS ------ RETORNOS ------ RETORNOS ------ RETORNOS ------ RETORNOS ------ RETORNOS ------ RETORNOS ------ RETORNOS
