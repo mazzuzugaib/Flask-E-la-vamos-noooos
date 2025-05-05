@@ -42,7 +42,7 @@ def editar(id):
     return render_template('editar.html', nome_pagina='Editar Música', musica=musica)
 
 #excluir musica
-@app.route('/excluir/<int:id_excluir')
+@app.route('/excluir/<int:id_excluir>')
 def excluir(id_excluir):
     Musica.query.filter_by(tb_id=id_excluir).delete()
     db.session.commit()
@@ -77,9 +77,11 @@ def cadastro_musica():
     titulo = request.form['titulo']
     artista = request.form['artista']
     genero = request.form['genero']
+    arquivo = request.files['arquivo']
 
     musica = Musica.query.filter_by(tb_titulo=titulo).first()
     cantor = Musica.query.filter_by(tb_artista=artista).first()
+    pasta = app.config['UPLOAD']
     #no curso, ele limita apenas pela musica, mas isso é uma tolice porque pode haver músicas com o mesmo nome
     #de artistas diferentes, então eu fiz a validação também pelo artista.
     if musica and cantor:
@@ -87,8 +89,11 @@ def cadastro_musica():
         return redirect(url_for('inicio'))
 
     nova_musica = Musica(tb_titulo=titulo, tb_artista=artista, tb_genero=genero)
+    #a linha abaixo esta salvando a imagem na pasta, com o nome de 'album_' e o id da música, ex. album_1.jpg
+    
     db.session.add(nova_musica)
     db.session.commit()
+    arquivo.save(f'{pasta}/album_{nova_musica.tb_id}.jpg')
 
     musicas = Musica.query.order_by(Musica.tb_id)
 
