@@ -1,7 +1,8 @@
-from flask import render_template, request, session, url_for, redirect, flash
+from flask import render_template, request, session, url_for, redirect, flash, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from models import Musica, Usuario
 from app import app, db
+from definicoes import recupera_imagem
 
 #pagina inicial
 @app.route('/')
@@ -39,7 +40,13 @@ def editar(id):
         return redirect(url_for('login'))
     
     musica=Musica.query.filter_by(tb_id=id).first()
-    return render_template('editar.html', nome_pagina='Editar Música', musica=musica)
+
+    album = recupera_imagem(id)
+
+    return render_template('editar.html',
+                           nome_pagina='Editar Música',
+                           musica=musica,
+                           imagem_musica=album)
 
 #excluir musica
 @app.route('/excluir/<int:id_excluir>')
@@ -132,3 +139,7 @@ def sair():
     session['usuario_in'] = None
 
     return redirect(url_for('login'))
+
+@app.route('/uploads/<nome_imagem>')
+def imagem(nome_imagem):
+    return send_from_directory('uploads', nome_imagem)
