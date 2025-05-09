@@ -1,8 +1,9 @@
 from flask import render_template, request, session, url_for, redirect, flash, send_from_directory
-from flask_sqlalchemy import SQLAlchemy
 from models import Musica, Usuario
 from app import app, db
 from definicoes import recupera_imagem
+import time
+
 
 #pagina inicial
 @app.route('/')
@@ -103,8 +104,9 @@ def cadastro_musica():
 
     nome_arquivo = arquivo.filename.split('.') #pega o nome do arquivo, ex. album.jpg e separa no ponto('.'), ficando ['album', 'jpg']
     extensao = nome_arquivo[len(nome_arquivo)-1]#pega o último elemento da lista(o -1 ), ou seja a extensao ex. 'jpg'
-    
-    arquivo.save(f'{pasta}/album_{nova_musica.tb_id}.{extensao}')# salva o arquivo na pasta uploads com o nome completo, ex. album_1.jpg
+    momento = time.time() #para resolver o problema de cash ao salvar a imagem. Para a imagem salva nao precisar de f5 para aparecer
+    nome_completo = f'album_{nova_musica.tb_id}_{momento}.{extensao}'
+    arquivo.save(f'{pasta}/{nome_completo}')# salva o arquivo na pasta uploads com o nome completo, ex. album_1.jpg
 
     musicas = Musica.query.order_by(Musica.tb_id)
 
@@ -139,7 +141,8 @@ def atualizar():
     pasta = app.config['UPLOAD']
     nome_arquivo = arquivo.filename.split('.')
     extensao = nome_arquivo[len(nome_arquivo)-1]
-    nome_completo = f'album_{musica.tb_id}.{extensao}'
+    momento = time.time()
+    nome_completo = f'album_{musica.tb_id}_{momento}.{extensao}'
     arquivo.save(f'{pasta}/{nome_completo}')
 
     flash('Música atualizada com sucesso!')
