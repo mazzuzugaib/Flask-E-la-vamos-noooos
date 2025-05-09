@@ -100,7 +100,11 @@ def cadastro_musica():
     
     db.session.add(nova_musica)
     db.session.commit()
-    arquivo.save(f'{pasta}/album_{nova_musica.tb_id}.jpg')
+
+    nome_arquivo = arquivo.filename.split('.') #pega o nome do arquivo, ex. album.jpg e separa no ponto('.'), ficando ['album', 'jpg']
+    extensao = nome_arquivo[len(nome_arquivo)-1]#pega o último elemento da lista(o -1 ), ou seja a extensao ex. 'jpg'
+    
+    arquivo.save(f'{pasta}/album_{nova_musica.tb_id}.{extensao}')# salva o arquivo na pasta uploads com o nome completo, ex. album_1.jpg
 
     musicas = Musica.query.order_by(Musica.tb_id)
 
@@ -130,6 +134,13 @@ def atualizar():
 
     db.session.add(musica)
     db.session.commit()
+    
+    arquivo = request.files['arquivo_form_atualizar']
+    pasta = app.config['UPLOAD']
+    nome_arquivo = arquivo.filename.split('.')
+    extensao = nome_arquivo[len(nome_arquivo)-1]
+    nome_completo = f'album_{musica.tb_id}.{extensao}'
+    arquivo.save(f'{pasta}/{nome_completo}')
 
     flash('Música atualizada com sucesso!')
     return redirect(url_for('inicio'))

@@ -1,13 +1,15 @@
 {%extends "navbar.html"%}
 
 {%block conteudo%}
-    <h1>Cadastro de músicas</h1>
-    <fieldset>
-        <input type="hidden" name="id_form_atualizar" value="{{musica.tb_id}}">
-        <img src="{{url_for('imagem', nome_imagem=imagem_musica)}}">
-
-        <form action="{{url_for('atualizar')}}" method="POST">
+    <h1>Editar música</h1>
+    
+    <form action="{{ url_for('atualizar') }}" method="POST" enctype="multipart/form-data">
+        <fieldset>
             
+            <input type="hidden" name="id_form_atualizar" value="{{musica.tb_id}}">
+            <img src="{{url_for('imagem', nome_imagem=imagem_musica)}}"><br><br>
+            <label for="arquivo">Album</label>
+            <input type="file" name="arquivo_form_atualizar" accept=".jpg, .jpeg, .png"><br><br>
 
             <label for="titulo">Título</label>
             <input type="text" name="titulo_form_atualizar" value="{{musica.tb_titulo}}"><br><br>
@@ -18,9 +20,10 @@
             <label for="genero">Genero</label>
             <input type="text" name="genero_form_atualizar" value="{{musica.tb_genero}}"><br><br>
 
-            <input type="submit" value="Cadastrar">
-        </form>
+            <input type="submit" value="Alterar">
+        </fieldset>
+    </form>
 
         
-    </fieldset>
+    
 {% endblock %}
