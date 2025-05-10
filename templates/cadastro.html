@@ -7,16 +7,17 @@
             <label for="arquivo">Album</label>
             <input type="file" name="arquivo" accept=".jpg, .jpeg, .png"><br><br>
 
-            <label for="titulo">Título</label>
-            <input type="text" name="titulo"><br><br>
+            {{form.titulo.label()}}
+            {{form.titulo()}}<br><br>
 
-            <label for="artista">Artista</label>
-            <input type="text" name="artista"><br><br>
+            {{form.artista.label()}}
+            {{form.artista()}}<br><br>
 
-            <label for="genero">Genero</label>
-            <input type="text" name="genero"><br><br>
+            {{form.genero.label()}}
+            {{form.genero()}}<br><br>
 
-            <input type="submit" value="Cadastrar">
+            {{form.cadastrar()}}
+
         </form>
 
         

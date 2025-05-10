@@ -1,5 +1,6 @@
-#imports
+#import flask
 from flask import Flask
+#para criar o banco de dados
 from flask_sqlalchemy import SQLAlchemy
 
 #instanciando o Flask

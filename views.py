@@ -1,7 +1,7 @@
 from flask import render_template, request, session, url_for, redirect, flash, send_from_directory
 from models import Musica, Usuario
 from app import app, db
-from definicoes import recupera_imagem
+from definicoes import recupera_imagem, deleta_imagem, FormularioMusica
 import time
 
 
@@ -25,7 +25,8 @@ def novo():
 #pagina de cadastro de musica
 @app.route('/cadastro')
 def cadastro():
-    return render_template('cadastro.html', nome_pagina='Cadastro')
+    form = FormularioMusica()
+    return render_template('cadastro.html', nome_pagina='Cadastro', form=form)
 
 #login
 @app.route('/login')
@@ -53,6 +54,7 @@ def editar(id):
 @app.route('/excluir/<int:id_excluir>')
 def excluir(id_excluir):
     Musica.query.filter_by(tb_id=id_excluir).delete()
+    deleta_imagem(id_excluir)
     db.session.commit()
     flash('Música excluída.')
     return redirect(url_for('inicio'))
@@ -81,7 +83,6 @@ def criar_usuario():
 
 @app.route('/cadastrar', methods=['POST'])
 def cadastro_musica():
-    
     titulo = request.form['titulo']
     artista = request.form['artista']
     genero = request.form['genero']
@@ -95,10 +96,9 @@ def cadastro_musica():
     if musica and cantor:
         flash('Essa música já está cadastrada!')
         return redirect(url_for('inicio'))
-
+    
     nova_musica = Musica(tb_titulo=titulo, tb_artista=artista, tb_genero=genero)
     #a linha abaixo esta salvando a imagem na pasta, com o nome de 'album_' e o id da música, ex. album_1.jpg
-    
     db.session.add(nova_musica)
     db.session.commit()
 
@@ -143,6 +143,7 @@ def atualizar():
     extensao = nome_arquivo[len(nome_arquivo)-1]
     momento = time.time()
     nome_completo = f'album_{musica.tb_id}_{momento}.{extensao}'
+    deleta_imagem(musica.tb_id)
     arquivo.save(f'{pasta}/{nome_completo}')
 
     flash('Música atualizada com sucesso!')
