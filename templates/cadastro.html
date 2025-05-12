@@ -3,6 +3,7 @@
 {%block conteudo%}
     <h1>Cadastro de músicas</h1>
     <fieldset>
+        {{ form.csrf_token() }}
         <form action="cadastrar" method="POST" enctype="multipart/form-data">
             <label for="arquivo">Album</label>
             <input type="file" name="arquivo" accept=".jpg, .jpeg, .png"><br><br>

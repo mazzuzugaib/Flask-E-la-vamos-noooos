@@ -83,9 +83,14 @@ def criar_usuario():
 
 @app.route('/cadastrar', methods=['POST'])
 def cadastro_musica():
-    titulo = request.form['titulo']
-    artista = request.form['artista']
-    genero = request.form['genero']
+    formulario = FormularioMusica(request.form)
+    # para validar o formulario:
+    if not formulario.validate_on_submit():
+        return redirect(url_for('cadastro'))
+    
+    titulo = formulario.titulo.data
+    artista = formulario.artista.data
+    genero = formulario.genero.data
     arquivo = request.files['arquivo']
 
     musica = Musica.query.filter_by(tb_titulo=titulo).first()
