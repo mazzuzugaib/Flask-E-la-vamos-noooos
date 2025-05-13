@@ -43,11 +43,16 @@ def editar(id):
     
     musica=Musica.query.filter_by(tb_id=id).first()
 
+    form = FormularioMusica()
+    form.titulo.data = musica.tb_titulo
+    form.artista.data = musica.tb_artista
+    form.genero.data = musica.tb_genero
+
     album = recupera_imagem(id)
 
     return render_template('editar.html',
                            nome_pagina='Editar Música',
-                           musica=musica,
+                           musica=form,
                            imagem_musica=album)
 
 #excluir musica
@@ -113,9 +118,9 @@ def cadastro_musica():
     nome_completo = f'album_{nova_musica.tb_id}_{momento}.{extensao}'
     arquivo.save(f'{pasta}/{nome_completo}')# salva o arquivo na pasta uploads com o nome completo, ex. album_1.jpg
 
-    musicas = Musica.query.order_by(Musica.tb_id)
+    musicas = Musica.query.order_by(Musica.tb_id).all()
 
-    return render_template('home.html', lista_musicas = musicas)
+    return render_template('home.html', lista_musicas=musicas)
 
 #validação de usuário (abrir sessão)
 @app.route('/validar', methods=['POST'])
