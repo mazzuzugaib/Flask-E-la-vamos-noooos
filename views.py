@@ -38,7 +38,6 @@ def login():
 def editar(id):
     if session.get('usuario_in') is None or 'usuario_in' not in session:
         flash(f'Faça login para continuar ou <a href="{url_for("novo")}">cadastre-se</a>', 'html')
-
         return redirect(url_for('login'))
     
     musica=Musica.query.filter_by(tb_id=id).first()
@@ -53,7 +52,7 @@ def editar(id):
     return render_template('editar.html',
                            nome_pagina='Editar Música',
                            musica=form,
-                           imagem_musica=album)
+                           imagem_musica=album, id=id)
 
 #excluir musica
 @app.route('/excluir/<int:id_excluir>')
@@ -138,26 +137,29 @@ def valide():
         return redirect(url_for('login'))
 #Passar os dados da rota editar para atualizar a música
 @app.route('/atualizar', methods=['POST'])
-def atualizar():
-    musica = Musica.query.filter_by(tb_id=request.form['id_form_atualizar']).first()
-    musica.tb_titulo = request.form['titulo_form_atualizar']
-    musica.tb_artista = request.form['artista_form_atualizar']
-    musica.tb_genero = request.form['genero_form_atualizar']
+def atualizar(): 
+    #tratativa de informações do formulario
+    form = FormularioMusica(request.form) 
+    if form.validate_on_submit:
+        musica = Musica.query.filter_by(tb_id=request.form['id_form_atualizar']).first()
+        musica.tb_titulo = form.titulo.data
+        musica.tb_artista = form.artista.data
+        musica.tb_genero = form.genero.data
+        db.session.add(musica)
+        db.session.commit()
+        #tratativa da imagem
+        if arquivo:
+            arquivo = request.files['arquivo_form_atualizar']
+            pasta = app.config['UPLOAD']
+            nome_arquivo = arquivo.filename.split('.')
+            extensao = nome_arquivo[len(nome_arquivo)-1]
+            momento = time.time()
+            nome_completo = f'album_{musica.tb_id}_{momento}.{extensao}'
+            deleta_imagem(musica.tb_id)
+            arquivo.save(f'{pasta}/{nome_completo}')
 
-    db.session.add(musica)
-    db.session.commit()
-    
-    arquivo = request.files['arquivo_form_atualizar']
-    pasta = app.config['UPLOAD']
-    nome_arquivo = arquivo.filename.split('.')
-    extensao = nome_arquivo[len(nome_arquivo)-1]
-    momento = time.time()
-    nome_completo = f'album_{musica.tb_id}_{momento}.{extensao}'
-    deleta_imagem(musica.tb_id)
-    arquivo.save(f'{pasta}/{nome_completo}')
-
-    flash('Música atualizada com sucesso!')
-    return redirect(url_for('inicio'))
+        flash('Música atualizada com sucesso!')
+        return redirect(url_for('inicio'))
 #log out de usuario
 @app.route('/sair')
 def sair():
