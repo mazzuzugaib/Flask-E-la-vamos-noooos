@@ -20,7 +20,8 @@ def inicio():
 #pagina de cadastro de usuario
 @app.route('/novo')
 def novo():
-    return render_template('novo.html', nome_pagina='Novo Usuário')
+    form = FormularioUser()
+    return render_template('novo.html', nome_pagina='Novo Usuário', form=form)
 
 #pagina de cadastro de musica
 @app.route('/cadastro')
@@ -70,18 +71,19 @@ def excluir(id_excluir):
 #pega dados do form em cadastro.html.
 @app.route('/criar_usuario', methods=['POST'])
 def criar_usuario():
-    nome = request.form['nome']
-    login = request.form['login']
-    senha = request.form['senha']
+    usuario = FormularioUser(request.form)
+    nome = usuario.nome_wtf.data
+    login = usuario.login_wtf.data
+    senha = usuario.senha_wtf.data
 
-    usuario = Usuario.query.filter_by(login_us=login).first()
-    if usuario:
+    usuario_novo = Usuario.query.filter_by(login_us=login).first()
+    if usuario_novo:
         flash('Esse usuário já existe!')
         return redirect(url_for('novo'))
 
     novo_usuario = Usuario(nome_us=nome, login_us=login, senha_us=senha)
     db.session.add(novo_usuario)
-    db.session.commit()
+    db.session.commit() 
 
     flash('Usuário cadastrado com sucesso!')
     
@@ -126,10 +128,11 @@ def cadastro_musica():
 #validação de usuário (abrir sessão)
 @app.route('/validar', methods=['POST'])
 def valide():
-    user = Usuario.query.filter_by(login_us=request.form['user']).first()
-    senha = Usuario.query.filter_by(senha_us=request.form['senha']).first()
+    formulario = FormularioUser(request.form)
+    user = Usuario.query.filter_by(login_us=formulario.login_wtf.data).first()
+    senha = Usuario.query.filter_by(senha_us=formulario.senha_wtf.data).first()
     if user and senha:
-        session['usuario_in'] = 'Lorem'
+        session['usuario_in'] = user.nome_us
 
         flash('Login realizado com sucesso!')
         

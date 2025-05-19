@@ -11,23 +11,20 @@
         {% endif %}
     {% endwith %}
 
-<fieldset>
-    <fieldset>
-        <legend>Cadastre-se</legend>
-        <form action="/criar_usuario" method="post">
-
-            <label for="nome">Nome:</label>
-            <input type="text" name="nome">
+    <legend>Cadastre-se</legend>
+    <form action="/criar_usuario" method="post">
+        <fieldset>
+            {{form.nome_wtf.label()}}
+            {{form.nome_wtf()}}
             <br><br>
-            <label for="usuario_novo">Usuário:</label>
-            <input type="text" name="usuario_novo">
+            {{form.login_wtf.label()}}
+            {{form.login_wtf()}}
             <br><br>
-            <label for="senha">Senha:</label>
-            <input type="text" name = "nova_senha">
+            {{form.senha_wtf.label()}}
+            {{form.senha_wtf()}}
 
-            <input type="submit" value="Cadastrar">
-        </form>
-    </fieldset>
-</fieldset>
+            {{form.cadastrar_wtf()}}
+        </fieldset>
+     </form>
 
 {% endblock %}

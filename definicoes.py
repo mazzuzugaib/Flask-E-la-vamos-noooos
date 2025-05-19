@@ -14,9 +14,11 @@ class FormularioMusica(FlaskForm):
     cadastrar = SubmitField('Cadastrar')
 
 class FormularioUser(FlaskForm):
+    nome_wtf = StringField('Nome', [validators.DataRequired(), validators.length(min=5, max=50)])
     login_wtf = StringField('Login', [validators.DataRequired(), validators.length(min=2, max=10)])
     senha_wtf = PasswordField('Senha', [validators.DataRequired(), validators.length(min=2, max=10)])
     entrar_wtf = SubmitField('Entrar')
+    cadastrar_wtf = SubmitField('Cadastrar Usuário')
 
 
 def recupera_imagem(id):
