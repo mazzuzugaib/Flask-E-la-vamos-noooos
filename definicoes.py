@@ -4,7 +4,7 @@ import os
 from app import app
 #para validação de usuario:
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, validators
+from wtforms import StringField, SubmitField, validators, PasswordField
 
 #classe para validar formulario
 class FormularioMusica(FlaskForm):
@@ -12,6 +12,12 @@ class FormularioMusica(FlaskForm):
     artista = StringField('Artista', [validators.DataRequired(), validators.length(min=2, max=30)])
     genero = StringField('Gênero', [validators.DataRequired(), validators.length(min=2, max=30)])
     cadastrar = SubmitField('Cadastrar')
+
+class FormularioUser(FlaskForm):
+    login_wtf = StringField('Login', [validators.DataRequired(), validators.length(min=2, max=10)])
+    senha_wtf = PasswordField('Senha', [validators.DataRequired(), validators.length(min=2, max=10)])
+    entrar_wtf = SubmitField('Entrar')
+
 
 def recupera_imagem(id):
     for imagem in os.listdir(app.config['UPLOAD']):

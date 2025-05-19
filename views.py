@@ -1,7 +1,7 @@
 from flask import render_template, request, session, url_for, redirect, flash, send_from_directory
 from models import Musica, Usuario
 from app import app, db
-from definicoes import recupera_imagem, deleta_imagem, FormularioMusica
+from definicoes import recupera_imagem, deleta_imagem, FormularioMusica, FormularioUser
 import time
 
 
@@ -31,7 +31,9 @@ def cadastro():
 #login
 @app.route('/login')
 def login():
-    return render_template('login.html', nome_pagina='Login')
+    form = FormularioUser
+
+    return render_template('login.html', nome_pagina='Login', form=form)
 
 #editar musica
 @app.route('/editar/<int:id>')

@@ -10,21 +10,20 @@
             </ul>
         {% endif %}
     {% endwith %}
-
-   
-    <fieldset>
-        <fieldset>
+     
             <legend>Login</legend>
             <form action="/validar" method="post">
-
-                <label for="user">Usuário:</label>
-                <input type="text" name="user">
-                <br><br>
-                <label for="senha">Senha:</label>
-                <input type="password" name = "senha">
-
+                    {{form.csrf_token()}}
+                    <fieldset>
+                    {{form.login_wtf.label()}}
+                    {{form.login_wtf()}}
+                    <br><br>
+                    {{form.senha_wtf.label()}}
+                    {{form.senha_wtf.label(())}}
+                    <br><br>
+                    {{form.entrar_wtf()}}
+                </fieldset>            
                 <input type="submit" value="Entrar">
             </form>
-        </fieldset>
-    </fieldset>
+
 {% endblock %}
