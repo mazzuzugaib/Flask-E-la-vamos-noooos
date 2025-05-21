@@ -19,3 +19,6 @@ insert into usuario(nome_us, login_us, senha_us)
 values('Lorem Ipsum', 'lorem', 'ipsum');
 alter table usuario
 add unique (login_us);
+
+alter table usuario
+modify senha_us varchar(255)not null;

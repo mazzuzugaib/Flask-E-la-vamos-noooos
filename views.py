@@ -21,7 +21,7 @@ def inicio():
 @app.route('/novo')
 def novo():
     form = FormularioUser()
-    return render_template('novo.html', nome_pagina='Novo Usuário', form=form)
+    return render_template('novo.html', nome_pagina='Novo Usuário', form=form)  
 
 #pagina de cadastro de musica
 @app.route('/cadastro')
@@ -72,9 +72,11 @@ def excluir(id_excluir):
 @app.route('/criar_usuario', methods=['POST'])
 def criar_usuario():
     usuario = FormularioUser(request.form)
+    if not form.validate_on_submit():
+        return redirect(url_for('novo'))
     nome = usuario.nome_wtf.data
     login = usuario.login_wtf.data
-    senha = usuario.senha_wtf.data
+    senha = usuario.senha_wtf.data  
 
     usuario_novo = Usuario.query.filter_by(login_us=login).first()
     if usuario_novo:
@@ -86,7 +88,6 @@ def criar_usuario():
     db.session.commit() 
 
     flash('Usuário cadastrado com sucesso!')
-    
     return redirect(url_for('login'))
 
 @app.route('/cadastrar', methods=['POST'])
