@@ -13,6 +13,7 @@
 
     <legend>Cadastre-se</legend>
     <form action="/criar_usuario" method="post">
+        {{ form.csrf_token() }}
         <fieldset>
             {{form.nome_wtf.label()}}
             {{form.nome_wtf()}}
