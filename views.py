@@ -3,7 +3,7 @@ from models import Musica, Usuario
 from app import app, db
 from definicoes import recupera_imagem, deleta_imagem, FormularioMusica, FormularioUser
 import time
-from flask_bcrypt import generate_password_hash
+from flask_bcrypt import generate_password_hash, check_password_hash
 
 
 #pagina inicial
@@ -73,7 +73,7 @@ def excluir(id_excluir):
 @app.route('/criar_usuario', methods=['POST'])
 def criar_usuario():
     usuario = FormularioUser(request.form)
-    if not form.validate_on_submit():
+    if not usuario.validate_on_submit():
         return redirect(url_for('novo'))
     nome = usuario.nome_wtf.data
     login = usuario.login_wtf.data
@@ -132,7 +132,7 @@ def cadastro_musica():
 def valide():
     formulario = FormularioUser(request.form)
     user = Usuario.query.filter_by(login_us=formulario.login_wtf.data).first()
-    senha = check_passowrd_hash(user.senha_us, formulario.senha_wtf.data)
+    senha = check_password_hash(user.senha_us, formulario.senha_wtf.data)
     if user and senha:
         session['usuario_in'] = user.nome_us
         flash('Login realizado com sucesso!')
