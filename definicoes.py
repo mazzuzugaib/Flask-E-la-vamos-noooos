@@ -8,7 +8,7 @@ from wtforms import StringField, SubmitField, validators, PasswordField
 
 #classe para validar formulario
 class FormularioMusica(FlaskForm):
-    titulo = StringField('Título da Música', [validators.DataRequired(), validators.length(min=2, max=30)])
+    titulo = StringField('Título da Música', [validators.DataRequired(), validators.length(min=2, max=50)])
     artista = StringField('Artista', [validators.DataRequired(), validators.length(min=2, max=30)])
     genero = StringField('Gênero', [validators.DataRequired(), validators.length(min=2, max=30)])
     cadastrar = SubmitField('Cadastrar')

@@ -32,7 +32,7 @@ def cadastro():
 #login
 @app.route('/login')
 def login():
-    form = FormularioUser
+    form = FormularioUser()
 
     return render_template('login.html', nome_pagina='Login', form=form)
 
@@ -153,8 +153,8 @@ def atualizar():
         db.session.add(musica)
         db.session.commit()
         #tratativa da imagem
+        arquivo = request.files['arquivo_form_atualizar']
         if arquivo:
-            arquivo = request.files['arquivo_form_atualizar']
             pasta = app.config['UPLOAD']
             nome_arquivo = arquivo.filename.split('.')
             extensao = nome_arquivo[len(nome_arquivo)-1]

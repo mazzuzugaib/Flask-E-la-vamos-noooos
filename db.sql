@@ -4,7 +4,7 @@ select * from musica;
 select * from usuario;
 create table musica(
 	tb_id int primary key auto_increment not null,
-    tb_titulo varchar(30) not null,
+    tb_titulo varchar(50) not null,
     tb_artista varchar(30) not null,
     tb_genero varchar(30) not null);
 insert into musica(tb_titulo, tb_artista, tb_genero)
